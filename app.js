@@ -8,6 +8,7 @@ const app= express();
 app.get('/',(req,res)=>{
     res.send("sayfa");
 });
+
 app.listen(port,()=>{
     console.log(`server running on port ${port}`);
 });
