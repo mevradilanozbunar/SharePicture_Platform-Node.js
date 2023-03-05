@@ -1,9 +1,9 @@
 import express from 'express';
-import { getAboutPage,getIndexPage } from './controllers/pageController.js';    
+import * as pageController from '../controllers/pageController.js';    
 
-const router = express.Router();
+const Pagerouter = express.Router();
 
-router.route("/").get(getIndexPage);
-router.route("/about").get(getAboutPage);
+Pagerouter.route("/").get(pageController.getIndexPage);
+Pagerouter.route("/about").get(pageController.getAboutPage);
 
-export default router
+export default Pagerouter;
