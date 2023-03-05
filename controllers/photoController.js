@@ -1,0 +1,1 @@
+import Photo from '../models/photoModel.js';
