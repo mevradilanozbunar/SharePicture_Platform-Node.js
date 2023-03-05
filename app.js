@@ -1,9 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import conn  from './config/dB.js';    
 
-const port=5000;
 
 dotenv.config();
+conn();
 const app= express();
 
 app.set("view engine","ejs");
@@ -18,6 +19,6 @@ app.get('/about',(req,res)=>{
     res.render("about");
 });
 
-app.listen(port,()=>{
-    console.log(`server running on port ${port}`);
+app.listen(process.env.PORT,()=>{
+    console.log(`server running on port ${process.env.PORT}`);
 });
