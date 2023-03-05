@@ -2,7 +2,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 import conn  from './config/dB.js';    
 
-
 dotenv.config();
 conn();
 const app= express();
