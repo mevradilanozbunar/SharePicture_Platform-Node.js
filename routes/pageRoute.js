@@ -5,5 +5,6 @@ const Pagerouter = express.Router();
 
 Pagerouter.route("/").get(pageController.getIndexPage);
 Pagerouter.route("/about").get(pageController.getAboutPage);
+Pagerouter.route("/register").get(pageController.getRegisterPage);
 
 export default Pagerouter;
