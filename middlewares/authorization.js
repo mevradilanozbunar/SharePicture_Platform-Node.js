@@ -3,19 +3,24 @@ import User from '../models/userModel.js';
 
 const validateToken=async(req,res,next) => {
     try{
-    const autHeader= req.headers.Authorization || req.headers.authorization;
-    const token= autHeader && autHeader.split(" ")[1];
+    const token= req.cookies.jsonwebtoken;
 
-    if(!token) {
-        return res.status(401).json({succeed:false,error:"no token available",});
+    if(token) {
+        JsonWebToken.verify(token,process.env.JWT_PRIVATE_KEY,(err)=>{
+            if(err) {
+                res.redirect("/login");
+            }
+            else {
+                next();
+            }
+        });
     }
     else{
-        req.user=await User.findById(JsonWebToken.verify(token,process.env.JWT_PRIVATE_KEY).userId);
-        next();
-
+        res.redirect("/login");
     }
     }
     catch(error){
+        console.log(error);
         res.status(401).json({succeed:false,error:"not authorized ",});
     }
     
