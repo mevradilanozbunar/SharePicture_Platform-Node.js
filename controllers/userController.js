@@ -1,5 +1,6 @@
 import User from '../models/userModel.js';
 import bcrypt from 'bcrypt'; 
+import JsonWebToken from 'jsonwebtoken';
 
 const createUser = async (req, res) => {
     try {
@@ -22,7 +23,10 @@ const createUser = async (req, res) => {
       return res.status(401).json({error:"there is no such user"});
      }
      if(same){
-      res.status(200).send("you are logged in");
+      res.status(200).json({
+        user,
+        token:createToken(user._id),
+      });
 
      }
      else{
@@ -32,6 +36,12 @@ const createUser = async (req, res) => {
     } catch (error) {
       res.status(500).json(error);
     }
+  };
+
+  const createToken=(userId) => {
+    return JsonWebToken.sign({userId},process.env.JWT_PRIVATE_KEY,{
+      expiresIn:"1d",
+    });
   };
 
   export {
