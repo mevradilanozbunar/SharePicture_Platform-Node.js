@@ -12,6 +12,7 @@ app.set("view engine","ejs");
 
 app.use(express.static('public'));
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));//Bu ara yazılım, istek nesnesindeki "req.body" özelliğine form verilerini ekler ve uygulamanın sonraki ara yazılımı veya yönlendirme işlevleri tarafından kullanılabilir hale getirir. Bu sayede, gelen isteklerdeki form verileri kolayca kullanılabilir hale gelir.
 
 app.use("/",Pagerouter);
 app.use("/photos",Photorouter);
