@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 const conn = async() => {
     try{
         mongoose.connect(process.env.CONNECTION_STRING, {
-            dbName: 'share_photo_app',
             useNewUrlParser: true,
             useUnifiedTopology: true,
 
