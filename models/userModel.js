@@ -1,5 +1,7 @@
+import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
-const user = mongoose.Schema({
+
+const userSchema = mongoose.Schema({
     username: {
         type: String,
         required: [true, 'Username area is required'],
@@ -22,6 +24,14 @@ const user = mongoose.Schema({
 }
 );
 
-const User = mongoose.model('User', user);
+userSchema.pre('save', function (next) {
+  const user = this;
+  bcrypt.hash(user.password, 10, (err, hash) => {
+    user.password = hash;
+    next();
+  });
+});
+
+const User = mongoose.model('User', userSchema);
 
 export default User;
