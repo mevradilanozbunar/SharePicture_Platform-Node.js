@@ -1,3 +1,5 @@
+import JsonWebToken from 'jsonwebtoken';
+
 const getIndexPage = (req,res) => {
     res.render("index",{link:"index"});
 };
@@ -10,5 +12,9 @@ const getRegisterPage = (req,res) => {
 const getLoginPage = (req,res) => {
     res.render("login",{link:"login"});
 };
+const getLogout = (req,res) => {
+    res.cookie("JsonWebToken","",{maxAge:1,});
+    res.redirect("/");
+};
 
-export {getAboutPage,getIndexPage,getRegisterPage,getLoginPage};
+export {getLogout,getAboutPage,getIndexPage,getRegisterPage,getLoginPage};

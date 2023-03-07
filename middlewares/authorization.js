@@ -3,11 +3,12 @@ import User from '../models/userModel.js';
 
 const validateToken=async(req,res,next) => {
     try{
-    const token= req.cookies.jsonwebtoken;
+    const token= req.cookies.JsonWebToken;
 
     if(token) {
         JsonWebToken.verify(token,process.env.JWT_PRIVATE_KEY,(err)=>{
             if(err) {
+             
                 res.redirect("/login");
             }
             else {
@@ -16,7 +17,9 @@ const validateToken=async(req,res,next) => {
         });
     }
     else{
+      
         res.redirect("/login");
+
     }
     }
     catch(error){
