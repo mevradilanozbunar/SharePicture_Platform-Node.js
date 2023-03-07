@@ -1,10 +1,11 @@
 import JsonWebToken from 'jsonwebtoken';
+import User from '../models/userModel.js';
 
 const checkUser = async (req, res, next) => {
     const token = req.cookies.JsonWebToken;
   
     if (token) {
-      jwt.verify(token, process.env.JWT_PRIVATE_KEY, async (err, decodedToken) => {
+      JsonWebToken.verify(token, process.env.JWT_PRIVATE_KEY, async (err, decodedToken) => {
         if (err) {
           console.log(err.message);
           res.locals.user = null;
