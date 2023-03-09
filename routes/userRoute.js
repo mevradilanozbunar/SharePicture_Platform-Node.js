@@ -8,5 +8,6 @@ Userrouter.route('/login').post(userController.loginUser);
 Userrouter.route('/dashboard').get(authorization.validateToken, userController.getDashboardPage);
 Userrouter.route('/').get(authorization.validateToken,userController.getAllUsers);
 Userrouter.route("/:id").get(authorization.validateToken,userController.getAUser);
-
+Userrouter.route("/:id/follow").put(authorization.validateToken,userController.follow);
+Userrouter.route("/:id/unfollow").put(authorization.validateToken,userController.unfollow);
 export default Userrouter; 

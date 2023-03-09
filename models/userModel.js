@@ -20,6 +20,18 @@ const userSchema = mongoose.Schema({
         required: [true, 'Password area is required'],
         minLength: [4, 'At least 4 characters'],
       },
+      followers: [
+        {
+          type:mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+        },
+      ],
+      followings: [
+        {
+          type:mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+        },
+      ],
 },
 {
     timestamps: true

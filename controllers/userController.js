@@ -54,7 +54,8 @@ const createUser = async (req, res) => {
   };
   const getDashboardPage = async (req,res) => {
     const photos = await Photo.find({ user: res.locals.user._id });
-    res.render("dashboard",{link:"dashboard",photos}); };
+    const user= await User.findById({_id : res.locals.user._id}).populate(["followers","followings"]);
+    res.render("dashboard",{link:"dashboard",photos,user}); };
 
     const getAllUsers= async(req,res) => {
       try{
@@ -82,6 +83,60 @@ const createUser = async (req, res) => {
       }
   };
 
+  const follow= async(req,res) => {
+    try{
+       let user= await User.findByIdAndUpdate(
+        {_id:req.params.id},
+        {
+          $push:{followers:res.locals.User._id}
+        },
+        {
+          new:true
+        },);
+
+        user=await User.findByIdAndUpdate({_id:res.locals.User._id},
+          {
+            $push:{ followings: req.params.id }
+          },
+          {
+            new:true
+          },);
+          res.status(200).json({succeded:true,user});
+    }
+    catch(error) {
+        res.status(500).json({
+            succeded:false,error
+        });
+    } };
+
+    const unfollow= async(req,res) => {
+      try{
+         let user= await User.findByIdAndUpdate(
+          {_id:req.params.id},
+          {
+            $pull:{followers:res.locals.User._id}
+          },
+          {
+            new:true
+          },);
+  
+          user=await User.findByIdAndUpdate({_id:res.locals.User._id},
+            {
+              $pull:{ followings: req.params.id }
+            },
+            {
+              new:true
+            },);
+            res.status(200).json({succeded:true,user});
+      }
+      catch(error) {
+          res.status(500).json({
+              succeded:false,error
+          });
+      } };
+
+
+
 
   const createToken=(userId) => {
     return JsonWebToken.sign({userId},process.env.JWT_PRIVATE_KEY,{
@@ -90,5 +145,5 @@ const createUser = async (req, res) => {
   };
 
   export {
-    createUser,loginUser,getDashboardPage,getAllUsers,getAUser
+    unfollow,follow,createUser,loginUser,getDashboardPage,getAllUsers,getAUser
   };
