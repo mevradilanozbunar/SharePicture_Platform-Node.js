@@ -6,5 +6,7 @@ const Userrouter = express.Router();
 Userrouter.route('/register').post(userController.createUser);
 Userrouter.route('/login').post(userController.loginUser);
 Userrouter.route('/dashboard').get(authorization.validateToken, userController.getDashboardPage);
+Userrouter.route('/').get(authorization.validateToken,userController.getAllUsers);
+Userrouter.route("/:id").get(authorization.validateToken,userController.getAUser);
 
-export default Userrouter;
+export default Userrouter; 
