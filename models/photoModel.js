@@ -19,6 +19,9 @@ const photos = mongoose.Schema({
         type: String,
         required: true,
       },
+      image_public_id: {
+        type: String,
+      },
 
 },
 {
