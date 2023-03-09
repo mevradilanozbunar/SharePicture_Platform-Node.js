@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import checkUser from './middlewares/checkUser.js';
 import fileUpload from 'express-fileupload';
 import { v2 as cloudinary } from 'cloudinary';
+import MethodOverride from 'method-override';
 
 
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));//Bu ara yazılım, istek nesnesindeki "req.body" özelliğine form verilerini ekler ve uygulamanın sonraki ara yazılımı veya yönlendirme işlevleri tarafından kullanılabilir hale getirir. Bu sayede, gelen isteklerdeki form verileri kolayca kullanılabilir hale gelir.
 app.use(cookieParser());
 app.use(fileUpload({useTempFiles:true}));
+app.use(MethodOverride("_method",{methods:["POST","GET"],}))
 
 app.use("*",checkUser); //tüm get methodlarınde checkuserı check etmeli
 app.use("/",Pagerouter);

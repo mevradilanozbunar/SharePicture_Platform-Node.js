@@ -73,8 +73,13 @@ const createUser = async (req, res) => {
   const getAUser= async(req,res) => {
       try{
           const user=await User.findById({_id:req.params.id});
+          
+          const inFollowers = user.followers.some((follower) => {
+            return follower.equals(res.locals.user._id);
+          });
+      
           const photos=await Photo.find({user: user._id });
-          res.status(200).render("user",{user,photos,link:"users"});
+          res.status(200).render("user",{inFollowers,user,photos,link:"users"});
       }
       catch(error) {
           res.status(500).json({
@@ -88,20 +93,20 @@ const createUser = async (req, res) => {
        let user= await User.findByIdAndUpdate(
         {_id:req.params.id},
         {
-          $push:{followers:res.locals.User._id}
+          $push:{followers:res.locals.user._id}
         },
         {
           new:true
         },);
 
-        user=await User.findByIdAndUpdate({_id:res.locals.User._id},
+        user=await User.findByIdAndUpdate({_id:res.locals.user._id},
           {
             $push:{ followings: req.params.id }
           },
           {
             new:true
           },);
-          res.status(200).json({succeded:true,user});
+          res.status(200).redirect(`/users/${req.params.id }`);
     }
     catch(error) {
         res.status(500).json({
@@ -114,21 +119,20 @@ const createUser = async (req, res) => {
          let user= await User.findByIdAndUpdate(
           {_id:req.params.id},
           {
-            $pull:{followers:res.locals.User._id}
+            $pull:{followers:res.locals.user._id}
           },
           {
             new:true
           },);
   
-          user=await User.findByIdAndUpdate({_id:res.locals.User._id},
+          user=await User.findByIdAndUpdate({_id:res.locals.user._id},
             {
               $pull:{ followings: req.params.id }
             },
             {
               new:true
             },);
-            res.status(200).json({succeded:true,user});
-      }
+            res.status(200).redirect(`/users/${req.params.id }`);      }
       catch(error) {
           res.status(500).json({
               succeded:false,error
