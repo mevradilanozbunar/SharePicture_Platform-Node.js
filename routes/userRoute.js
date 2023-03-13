@@ -10,4 +10,6 @@ Userrouter.route('/').get(authorization.validateToken,userController.getAllUsers
 Userrouter.route("/:id").get(authorization.validateToken,userController.getAUser);
 Userrouter.route("/:id/follow").put(authorization.validateToken,userController.follow);
 Userrouter.route("/:id/unfollow").put(authorization.validateToken,userController.unfollow);
+Userrouter.route("/:id").put(authorization.validateToken,userController.updateAProfilInfo);
+
 export default Userrouter; 

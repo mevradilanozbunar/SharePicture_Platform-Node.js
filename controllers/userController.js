@@ -2,11 +2,15 @@ import User from '../models/userModel.js';
 import bcrypt from 'bcrypt'; 
 import JsonWebToken from 'jsonwebtoken';
 import Photo from '../models/photoModel.js';
+import { v2 as cloudinary } from 'cloudinary';
+import fs from 'fs';
 
 const createUser = async (req, res) => {
+  
     try {
       const user = await User.create(req.body);
       res.status(201).json({ user: user._id });
+
     } catch (error) {
 
       let errors2 = {};
@@ -139,8 +143,42 @@ const createUser = async (req, res) => {
           });
       } };
 
+      const updateAProfilInfo= async(req,res) => {
+        try{
+            const user=await User.findById({_id:req.params.id});
+            
+            if(req.files)
+            {
+                const public_id =user.image_public_id;
+                //await cloudinary.uploader.destroy(public_id);
+    
+                const result= await cloudinary.uploader.upload(
+                    req.files.image.tempFilePath,
+                    {
+                        use_filename:true,
+                        folder:"Photo_Share_App",
+                        
+                    }
+                    );
+    
+                    user.imageUrl=result.secure_url;
+                    user.image_public_id=result.public_id;
+                    fs.unlinkSync(req.files.image.tempFilePath);
+                    
+            }
+            user.userAbout=req.body.description;
+       
+    
+            user.save();
 
-
+            res.status(200).redirect("/users/dashboard");
+        }
+        catch(error) {
+            res.status(500).json({
+                succeded:false,error
+            });
+        }
+    };
 
   const createToken=(userId) => {
     return JsonWebToken.sign({userId},process.env.JWT_PRIVATE_KEY,{
@@ -148,6 +186,6 @@ const createUser = async (req, res) => {
     });
   };
 
-  export {
+  export {updateAProfilInfo,
     unfollow,follow,createUser,loginUser,getDashboardPage,getAllUsers,getAUser
   };

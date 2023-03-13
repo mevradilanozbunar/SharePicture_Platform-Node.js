@@ -32,6 +32,15 @@ const userSchema = mongoose.Schema({
           ref: 'User',
         },
       ],
+      imageUrl: {
+        type: String,default: 'https://res.cloudinary.com/dqumwwnmj/image/upload/v1678733287/Photo_Share_App/usee_iopq33.jpg'
+      },
+      image_public_id: {
+        type: String,
+      },
+      userAbout: {
+        type: String,default: 'user description area'
+      },
 },
 {
     timestamps: true
